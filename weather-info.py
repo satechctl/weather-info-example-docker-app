@@ -5,10 +5,12 @@ import requests
 import os
 import json
 
+from countryinfo import CountryInfo
+
 OPENWEATHERMAP_API_URL = "https://api.openweathermap.org/data/2.5/weather" 
 OPENWEATHERMAP_API_KEY = str(os.environ.get('OPENWEATHERMAP_API_KEY'))
 
-def  get_weather_info(city_name):
+def get_weather_info(city_name):
     # -- prepare request to api.openweathermap.org
     request_url = OPENWEATHERMAP_API_URL + "?q=" + str(city_name.capitalize()) + "&appid=" + OPENWEATHERMAP_API_KEY
     # -- get weather status for a given city
@@ -21,11 +23,15 @@ if __name__ == "__main__":
 
     # -- parse command line argumets (get city name)
     parser = argparse.ArgumentParser(
-        description="Check weather for a given city"
+        description="Check the weather for the capital city in given country"
     )
     # -- city name as positional argument
-    parser.add_argument("city", help="City name")
-    args =  parser.parse_args()
+    parser.add_argument("country", help="Country name")
+    args = parser.parse_args()
+
+    # -- get country capital
+    country_info = CountryInfo(args.country).info()
+    capital_city = country_info['capital']
 
     # -- print weather status for a given city
-    print(json.dumps(get_weather_info(args.city), indent=4))
+    print(json.dumps(get_weather_info(capital_city), indent=4))
