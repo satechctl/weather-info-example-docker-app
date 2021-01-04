@@ -30,8 +30,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     # -- get country capital
-    country_info = CountryInfo(args.country).info()
-    capital_city = country_info['capital']
+    capital_city = CountryInfo(args.country).capital()
 
     # -- print weather status for a given city
     print(json.dumps(get_weather_info(capital_city), indent=4))
